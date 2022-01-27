@@ -1,3 +1,4 @@
+source("code/cpDecomposition.R")
 tensorDecomposition <- function(xList, K = 5, maxError = 1e-5, maxIter = 1e3) {
   xNets <- length(xList)
   nNet <- xNets

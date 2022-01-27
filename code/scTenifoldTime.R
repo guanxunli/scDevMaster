@@ -1,3 +1,7 @@
+source("code/tensorDecomposition.R")
+source("code/pcNet.R")
+source("code/regression_coefficienets.R")
+source("code/TSNE_genelist.R")
 scTenifoldTime <- function(dta_list, method = "pcnet", time_vec, nComp = 5, q = 0,
                            K = 10, maxIter = 10000, maxError = 1e-5) {
   res <- list()

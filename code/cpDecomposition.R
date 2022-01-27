@@ -1,3 +1,4 @@
+source("code/asTensor.R")
 cpDecomposition <- function(tnsr, num_components = NULL, max_iter = 25, tol = 1e-5) {
   kronecker_list <- function(L) {
     isvecORmat <- function(x) {
