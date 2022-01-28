@@ -11,12 +11,12 @@ cpDecomposition <- function(tnsr, num_components = NULL, max_iter = 25, tol = 1e
     }
     retmat
   }
-  
+
   fnorm <- function(tnsr) {
     arr <- tnsr$data
     sqrt(sum(arr * arr))
   }
-  
+
   rs_unfold <- function(tnsr, m = NULL) {
     if (is.null(m)) stop("mode m must be specified")
     num_modes <- tnsr$num_modes
@@ -24,7 +24,7 @@ cpDecomposition <- function(tnsr, num_components = NULL, max_iter = 25, tol = 1e
     cs <- (1:num_modes)[-m]
     unfold(tnsr, row_idx = rs, col_idx = cs)
   }
-  
+
   unfold <- function(tnsr, row_idx = NULL, col_idx = NULL) {
     # checks
     rs <- row_idx
@@ -43,7 +43,7 @@ cpDecomposition <- function(tnsr, num_components = NULL, max_iter = 25, tol = 1e
     dim(mat) <- new_modes
     as.tensor(mat)
   }
-  
+
   hadamard_list <- function(L) {
     isvecORmat <- function(x) {
       is.matrix(x) || is.vector(x)
@@ -55,7 +55,7 @@ cpDecomposition <- function(tnsr, num_components = NULL, max_iter = 25, tol = 1e
     }
     retmat
   }
-  
+
   khatri_rao_list <- function(L, reverse = FALSE) {
     stopifnot(all(unlist(lapply(L, is.matrix))))
     ncols <- unlist(lapply(L, ncol))
@@ -70,7 +70,7 @@ cpDecomposition <- function(tnsr, num_components = NULL, max_iter = 25, tol = 1e
     }
     retmat
   }
-  
+
   superdiagonal_tensor <- function(num_modes, len, elements = 1L) {
     modes <- rep(len, num_modes)
     arr <- array(0, dim = modes)
@@ -81,7 +81,7 @@ cpDecomposition <- function(tnsr, num_components = NULL, max_iter = 25, tol = 1e
     }
     as.tensor(arr)
   }
-  
+
   ttl <- function(tnsr, list_mat, ms = NULL) {
     if (is.null(ms) || !is.vector(ms)) stop("m modes must be specified as a vector")
     if (length(ms) != length(list_mat)) stop("m modes length does not match list_mat length")
@@ -103,7 +103,7 @@ cpDecomposition <- function(tnsr, num_components = NULL, max_iter = 25, tol = 1e
     }
     tnsr
   }
-  
+
   rs_fold <- function(mat, m = NULL, modes = NULL) {
     if (is.null(m)) stop("mode m must be specified")
     if (is.null(modes)) stop("Tensor modes must be specified")
@@ -112,7 +112,7 @@ cpDecomposition <- function(tnsr, num_components = NULL, max_iter = 25, tol = 1e
     cs <- (1:num_modes)[-m]
     fold(mat, row_idx = rs, col_idx = cs, modes = modes)
   }
-  
+
   fold <- function(mat, row_idx = NULL, col_idx = NULL, modes = NULL) {
     # checks
     rs <- row_idx
@@ -133,12 +133,12 @@ cpDecomposition <- function(tnsr, num_components = NULL, max_iter = 25, tol = 1e
     iperm <- match(1:num_modes, c(rs, cs))
     as.tensor(aperm(array(mat, dim = c(modes[rs], modes[cs])), iperm))
   }
-  
-  
+
+
   if (is.null(num_components)) stop("num_components must be specified")
   stopifnot(is(tnsr, "list"))
   # if (.is_zero_tensor(tnsr)) stop("Zero tensor detected")
-  
+
   # initialization via truncated hosvd
   num_modes <- tnsr$num_modes
   modes <- tnsr$modes

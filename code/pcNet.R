@@ -28,56 +28,56 @@ pcNet <- function(X,
     # Step 3: Transform this vector back to the scale of the actual covariates, using the eigenvectors corresponding to the selected principal components to get the final PCR estimator for estimating the regression coefficients characterizing the original model.
     Beta <- colSums(y * score)
     Beta <- coeff %*% (Beta)
-    
+
     return(Beta)
   }
-  
+
   # # Standardizing the data
   X <- t(X)
-  
+
   # Identify the number of rows in the input matrix
   n <- ncol(X)
-  
+
   # Generate the output matrix
   A <- 1 - diag(n)
-  
+
   # Apply the principal component regression for each gene
   if (verbose) {
     B <- pbapply::pbsapply(seq_len(n), pcCoefficients)
   } else {
     B <- sapply(seq_len(n), pcCoefficients)
   }
-  
+
   # Transposition of the Beta coefficient matrix
   B <- t(B)
-  
+
   # Replacing the values in the output matrix
   for (K in seq_len(n)) {
     A[K, A[K, ] == 1] <- B[K, ]
   }
-  
+
   # Making the output matrix symmetric
   if (isTRUE(symmetric)) {
     A <- (A + t(A)) / 2
   }
-  
+
   # Absolute values for scaling and filtering
   absA <- abs(A)
-  
+
   # Scaling the output matrix
   if (isTRUE(scaleScores)) {
     A <- (A / max(absA))
   }
-  
+
   # Filtering the output matrix
   A[absA < quantile(absA, q)] <- 0
-  
+
   # Setting the diagonal to be 0
   diag(A) <- 0
-  
+
   # Adding names
   colnames(A) <- rownames(A) <- gNames
-  
+
   # Return
   return(A)
 }

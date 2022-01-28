@@ -36,28 +36,28 @@ scTenifoldTime <- function(dta_list, method = "pcnet", time_vec, nComp = 5, q = 
   }
   res$network_tensor <- network_tensor
   print("Finish tensor decomposition part.")
-  
+
   ## Do regression without tensor decomposition
   beta_mat <- regression_coefficienets(network_list = network_list, time_vec = time_vec)
   diag(beta_mat) <- 0
   rownames(beta_mat) <- colnames(beta_mat) <- gene_name
   res$beta_mat <- beta_mat
-  
+
   ## Get low dimensional representation and rank gene list
   set.seed(1)
   res$gene_list <- TSNE_genelist(beta_mat)
-  
-  
+
+
   ## Do regression with tensor decomposition
   beta_mat_tensor <- regression_coefficienets(network_list = network_tensor, time_vec = time_vec)
   diag(beta_mat_tensor) <- 0
   rownames(beta_mat_tensor) <- colnames(beta_mat_tensor) <- gene_name
   res$beta_mat_tensor <- beta_mat_tensor
-  
+
   ## Get low dimensional representation and rank gene list
   set.seed(1)
   res$gene_list_tensor <- TSNE_genelist(beta_mat_tensor)
-  
+
   ## return results
   return(res)
 }
