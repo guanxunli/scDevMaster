@@ -18,10 +18,10 @@ cell_diff <- round(n_cell / (n_group + 1))
 if (cell_diff > 250) {
   for (i in seq_len(n_group - 1)) {
     dta_list[[i]] <- as.matrix(dta[, (cell_diff * (i - 1) + 1):(cell_diff * (i + 1))])
-    time_vec[i] <- mean(sudotime[colnames(dta_list[[i]]), 1])
+    time_vec[i] <- mean(dta_sudotime[colnames(dta_list[[i]]), 1])
   }
   dta_list[[n_group]] <- as.matrix(dta[,  (cell_diff * (n_group - 1) + 1):n_cell])
-  time_vec[n_group] <- mean(sudotime[colnames(dta_list[[n_group]]), 1])
+  time_vec[n_group] <- mean(dta_sudotime[colnames(dta_list[[n_group]]), 1])
   time_vec <- time_vec / max(time_vec)
 } else{
   cell_diff <- round((n_cell - 500) / (n_group - 1))
@@ -38,4 +38,4 @@ if (cell_diff > 250) {
 #### save results
 res <- scTenifoldTime(dta_list, method = "pcnet", time_vec, nComp = 5, q = 0,
                       K = 5, maxIter = 10000, maxError = 1e-5)
-saveRDS(res, "data/GSE147807_CMs/results/networks/res_pcnet_ngroup", n_group, ".rds")
+saveRDS(res, paste0("data/GSE147807_CMs/results/networks/res_pcnet_ngroup", n_group, ".rds"))

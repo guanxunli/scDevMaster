@@ -28,14 +28,14 @@ if (cell_diff > 250) {
   if (cell_diff < 5) stop("The number of cell is too small.")
   for (i in seq_len(n_group - 1)) {
     dta_list[[i]] <- as.matrix(dta[, (cell_diff * (i - 1) + 1):(cell_diff * (i - 1) + 500)])
-    time_vec[i] <- mean(dta_sudotime[colnames(dta_list[[i]]), 1])
+    time_vec[i] <- mean(sudotime[colnames(dta_list[[i]]), 1])
   }
   dta_list[[n_group]] <- as.matrix(dta[, (n_cell - 500 + 1):n_cell])
-  time_vec[n_group] <- mean(dta_sudotime[colnames(dta_list[[n_group]]), 1])
+  time_vec[n_group] <- mean(sudotime[colnames(dta_list[[n_group]]), 1])
   time_vec <- time_vec / max(time_vec)
 }
 
 ## return results
 res <- scTenifoldTime(dta_list = dta_list, method = "pcnet", time_vec = time_vec,
                       nComp = 5, q = 0, K = 5)
-saveRDS(res, "data/zebrafish_hindbrain/results/networks/res_pcnet_ngroup_", n_group, ".rds")
+saveRDS(res, paste0("data/zebrafish_hindbrain/results/networks/res_pcnet_ngroup_", n_group, ".rds"))

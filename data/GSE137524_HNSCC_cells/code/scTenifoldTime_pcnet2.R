@@ -28,10 +28,10 @@ if (cell_diff > 250) {
   if (cell_diff < 5) stop("The number of cell is too small.")
   for (i in seq_len(n_group - 1)) {
     dta_list[[i]] <- as.matrix(dta[, (cell_diff * (i - 1) + 1):(cell_diff * (i - 1) + 500)])
-    time_vec[i] <- mean(dta_sudotime[colnames(dta_list[[i]]), 4])
+    time_vec[i] <- mean(sudotime[colnames(dta_list[[i]]), 4])
   }
   dta_list[[n_group]] <- as.matrix(dta[, (n_cell - 500 + 1):n_cell])
-  time_vec[n_group] <- mean(dta_sudotime[colnames(dta_list[[n_group]]), 4])
+  time_vec[n_group] <- mean(sudotime[colnames(dta_list[[n_group]]), 4])
   time_vec <- time_vec / max(time_vec)
 }
 
